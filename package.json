@@ -1,0 +1,33 @@
+{
+  "name": "pgprom",
+  "version": "1.0.0",
+  "description": "Easiest and safest way to use postgres abusing template strings",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "coverage": "nyc npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gimenete/pgprom.git"
+  },
+  "keywords": [
+    "postgres",
+    "sql",
+    "injection",
+    "pg"
+  ],
+  "author": "Alberto Gimeno <gimenete@gimenete.net>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gimenete/pgprom/issues"
+  },
+  "homepage": "https://github.com/gimenete/pgprom#readme",
+  "devDependencies": {
+    "mocha": "^2.3.4",
+    "nyc": "^5.3.0"
+  },
+  "dependencies": {
+    "pg": "^4.4.3"
+  }
+}
