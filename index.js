@@ -2,6 +2,12 @@
 
 var pg = require('pg')
 
+function Raw(string) {
+  this.toString = function() {
+    return string
+  }
+}
+
 module.exports = function(conString) {
 
   return {
@@ -11,7 +17,9 @@ module.exports = function(conString) {
       for (var i = 0; i < strings.length-1; i++) {
         let value = arguments[i+1]
         sql += strings[i]
-        if (Array.isArray(value)) {
+        if (value instanceof Raw) {
+          sql += value
+        } else if (Array.isArray(value)) {
           for (var i = 0; i < value.length; i++) {
             params.push(value[i])
             if (i > 0) sql+=','
@@ -46,6 +54,9 @@ module.exports = function(conString) {
     execute() {
       return this.query.apply(this, arguments)
         .then((result) => result.rowCount)
+    },
+    raw(string) {
+      return new Raw(string)
     }
   }
 }

@@ -74,13 +74,21 @@ sql.execute`DELETE FROM issues WHERE created_at < ${date}`
   })
 ```
 
-# Caveat
+## Dynamic queries
 
-This idea doesn't work well with dynamic queries because it will escape all the interpolated values. Example:
+Interpolated values are perfecto for... values :) But if you want to create dynamic SQL queries there are things you don't want to escape. For example this doesn't work:
 
 ```javascript
 const func = something ? 'NOW' : 'VERSION'
 sql.findOne`SELECT ${func}()`
 ```
 
-This doesn't work because the function name will be escaped.
+This doesn't work because the function name will be escaped. So you need to use `sql.raw()` like this:
+
+
+```javascript
+const func = something ? 'NOW' : 'VERSION'
+sql.findOne`SELECT ${sql.raw(func)}()`
+```
+
+Now `pgprom` won't treat `func` as a value to be escaped. It will just concatenate the value to the rest of the SQL query.

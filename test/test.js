@@ -4,12 +4,14 @@ const sql = require('../')(process.env.DATABASE_URL)
 const one = 1
 const two = 'two'
 const three = ['three', '3', 'tres']
+const func = 'NOW'
 
 describe('pgprom', () => {
 
   it('#query', () => {
-    return sql.query`SELECT ${one}::int as one, ${two}::text as two, ARRAY[${three}] as three`
+    return sql.query`SELECT ${sql.raw(func)}() as now, ${one}::int as one, ${two}::text as two, ARRAY[${three}] as three`
       .then((result) => {
+        assert.ok(result.rows[0].now)
         assert.deepEqual(result.rows[0].one, one)
         assert.deepEqual(result.rows[0].two, two)
         assert.deepEqual(result.rows[0].three, three)
@@ -17,8 +19,9 @@ describe('pgprom', () => {
   })
 
   it('#find', () => {
-    return sql.find`SELECT ${one}::int as one, ${two}::text as two, ARRAY[${three}] as three`
+    return sql.find`SELECT ${sql.raw(func)}() as now, ${one}::int as one, ${two}::text as two, ARRAY[${three}] as three`
       .then((rows) => {
+        assert.ok(rows[0].now)
         assert.deepEqual(rows[0].one, 1)
         assert.deepEqual(rows[0].two, two)
         assert.deepEqual(rows[0].three, three)
@@ -26,8 +29,9 @@ describe('pgprom', () => {
   })
 
   it('#findOne', () => {
-    return sql.findOne`SELECT ${one}::int as one, ${two}::text as two, ARRAY[${three}] as three`
+    return sql.findOne`SELECT ${sql.raw(func)}() as now, ${one}::int as one, ${two}::text as two, ARRAY[${three}] as three`
       .then((row) => {
+        assert.ok(row.now)
         assert.deepEqual(row.one, 1)
         assert.deepEqual(row.two, two)
         assert.deepEqual(row.three, three)

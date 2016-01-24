@@ -1,6 +1,6 @@
 {
   "name": "pgprom",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Easiest and safest way to use postgres abusing template strings",
   "main": "index.js",
   "scripts": {
